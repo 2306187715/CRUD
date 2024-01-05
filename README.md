@@ -17,3 +17,5 @@ net start mysql
 ```
 
 阿里云OSS实现照片的存储，需要在src/main/java/com/example/Utils/AliOSSUtils.js中配置自己的key
+
+前端打包nginx/后端jar包 打包在另一个仓库,点击即刻前往测试[https://github.com/2306187715/Test.v.1]
