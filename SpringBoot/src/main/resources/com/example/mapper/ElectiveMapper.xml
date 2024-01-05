@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.ElectiveMapper">
+    <!--    插入-->
+    <insert id="insert">
+        insert into elective(id, stu_id, course_id, semester_id, score, status, create_time, update_time)
+        values (#{id},
+                #{stuId},
+                #{courseId},
+                #{semesterId},
+                #{score},
+                #{status},
+                #{createTime},
+                #{updateTime})
+    </insert>
+    <!--    更新-->
+    <update id="update">
+        update elective
+        <set>
+            <if test="stuId != null">
+                stu_id = #{stuId},
+            </if>
+            <if test="courseId != null">
+                course_id = #{courseId},
+            </if>
+            <if test="score != null">
+                score = #{score},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime}
+            </if>
+        </set>
+        where id = #{id}
+
+    </update>
+    <!--    批量删除-->
+    <delete id="delete">
+        delete
+        from elective
+        where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--    分页查询-->
+    <select id="list" resultType="com.example.pojo.Elective">
+        select id, stu_id, course_id, semester_id, score, status, create_time, update_time
+        from elective
+        <where>
+            <if test="semesterId != null">
+                semester_id = #{semesterId}
+            </if>
+            <if test="stuId != null">
+                and stu_id like concat('%',#{stuId},'%')
+            </if>
+            <if test="courseId != null">
+                and course_id like concat('%',#{courseId},'%')
+            </if>
+            <if test="startScore!=null and endScore!=null">
+                and score between #{startScore} and #{endScore}
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+    <!--    按id查询-->
+    <select id="getById" resultType="com.example.pojo.Elective">
+        select id, stu_id, course_id, semester_id, score, status, create_time, update_time
+        from elective
+        where id = #{id}
+    </select>
+</mapper>
